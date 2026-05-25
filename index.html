@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You, My Infinite Symphony</title>
+    <style>
+        /* Desain Tema Utama Ultra-Premium */
+        body {
+            margin: 0; padding: 0;
+            background-color: #0f030a;
+            color: #fff0f5;
+            font-family: 'Times New Roman', Georgia, serif;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        /* 1. Layar Tirai Pembuka */
+        #gift-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #1f0514, #0b0107);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 2000; transition: all 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .gift-wrapper {
+            position: relative;
+            font-size: 95px; cursor: pointer;
+            animation: floating 2s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); filter: drop-shadow(0 15px 20px rgba(255,101,132,0.4)); }
+        }
+        .tap-text {
+            font-size: 11px; color: #ffb7c5;
+            letter-spacing: 6px; margin-top: 30px;
+            font-family: 'Courier New', monospace; text-transform: uppercase;
+            animation: pulseText 1.5s infinite;
+        }
+        @keyframes pulseText {
+            0%, 100% { opacity: 0.4; } 50% { opacity: 1; }
+        }
+
+        /* 2. Kanvas Latar Belakang Sinematik */
+        #space-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none; opacity: 0.25;
+        }
+
+        /* 3. Area Konten Utama */
+        #main-content {
+            display: none; opacity: 0;
+            transition: opacity 2.5s ease;
+            position: relative; z-index: 10;
+            min-height: 100vh; padding: 30px 20px;
+            box-sizing: border-box;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+
+        #countdown-box {
+            font-size: 80px; color: #ff477e; font-weight: bold;
+            text-shadow: 0 0 25px rgba(255,71,126,0.7);
+            font-family: Arial, sans-serif;
+        }
+
+        /* 4. Upgrade Box Teks Berjalan (Glassmorphism & Glow) */
+        #story-panel {
+            max-width: 480px; width: 100%;
+            background: rgba(20, 5, 14, 0.55);
+            border: 1px solid rgba(255, 101, 132, 0.25);
+            padding: 40px 30px; border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,101,132,0.05);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            box-sizing: border-box; display: none;
+            margin-bottom: 20px; transition: all 0.5s ease;
+        }
+        .story-header {
+            font-size: 11px; color: #ff758f;
+            letter-spacing: 5px; text-transform: uppercase;
+            font-family: Arial, sans-serif; margin-bottom: 20px;
+        }
+        .story-body {
+            font-size: 17.5px; line-height: 1.9;
+            color: #ffe5ec; min-height: 140px;
+            text-align: justify; font-style: italic;
+        }
+
+        /* 5. Buku Surat Lipat Magis */
+        #magical-book {
+            width: 320px; height: 400px;
+            position: relative; transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: none; margin: 30px auto;
+        }
+        .book-layer {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+            backface-visibility: hidden; border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 30px; box-sizing: border-box;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left center;
+        }
+        .layer-front {
+            background: linear-gradient(135deg, #320c21, #14020b);
+            border: 1px solid rgba(255,183,197,0.4); z-index: 2;
+        }
+        .layer-back {
+            background: linear-gradient(135deg, #44102d, #240517);
+            border: 1px solid rgba(255,183,197,0.4);
+            transform: rotateY(180deg); z-index: 1;
+        }
+        .layer-front.opened { transform: rotateY(-180deg); }
+        .action-btn {
+            background: linear-gradient(45deg, #ff477e, #ff758f);
+            color: white; border: none; padding: 12px 28px;
+            border-radius: 50px; font-weight: bold; cursor: pointer;
+            margin-top: 25px; font-size: 12px; letter-spacing: 1px;
+            font-family: Arial, sans-serif; text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(255,71,126,0.4);
+            transition: transform 0.2s;
+        }
+        .action-btn:active { transform: scale(0.95); }
+
+        /* 6. Animasi Detak Jantung Parallaks Akhir */
+        #final-heart-orchestra {
+            position: relative; width: 320px; height: 320px;
+            margin: 40px auto; display: none;
+            animation: heartbeat 1.2s infinite ease-in-out;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255,71,126,0.5)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 35px rgba(255,71,126,0.8)); }
+        }
+        .heart-particle {
+            position: absolute; width: 14px; height: 14px;
+            background: #ff477e; border-radius: 50%;
+            opacity: 0; transform: scale(0);
+            transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+        /* Kelopak Bunga Berjatuhan */
+        .falling-petal {
+            position: fixed; top: -20px; color: #ffb7c5;
+            font-size: 22px; user-select: none; pointer-events: none;
+            animation: flyDown linear infinite; z-index: 999;
+        }
+        @keyframes flyDown {
+            0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 1; }
+            50% { transform: translateY(50vh) rotate(180deg) translateX(25px); }
+            100% { transform: translateY(105vh) rotate(360deg) translateX(-10px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="vocal-track" loop>
+        <source src="https://files.catbox.moe/6v3ofk.mp3" type="audio/mp3">
+    </audio>
+
+    <canvas id="space-canvas"></canvas>
+
+    <div id="gift-screen" onclick="unveilSymphony()">
+        <div class="gift-wrapper">🎁</div>
+        <div class="tap-text">Open the Symphony</div>
+    </div>
+
+    <div id="main-content">
+        <div id="countdown-box"></div>
+
+        <div id="story-panel">
+            <div class="story-header" id="panel-title">Prelude</div>
+            <div class="story-body" id="panel-body"></div>
+        </div>
+
+        <div id="magical-book">
+            <div class="book-layer layer-front" id="b-front">
+                <span style="font-size: 55px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));">✉️</span>
+                <h2 style="color: #ffb7c5; font-weight: normal; margin: 20px 0 5px 0; font-size: 24px;">An Open Secret</h2>
+                <p style="font-size: 14px; color: #dfc5cd; line-height: 1.6; max-width: 24px0px;">Sebuah lembaran penutup yang dirangkai khusus untuk merayakan kehadiranmu.</p>
+                <button class="action-btn" onclick="revealLetter()">Buka Lembaran</button>
+            </div>
+            <div class="book-layer layer-back" id="b-back">
+                <span style="font-size: 30px; margin-bottom: 10px;">✨</span>
+                <h3 style="color: #ffb7c5; font-weight: normal; margin: 0 0 15px 0; font-size: 19px;">Infinite Gratitude</h3>
+                <p style="font-size: 13.5px; color: #f2d1db; line-height: 1.8; text-align: center; margin: 0; font-style: italic;">
+                    "Terima kasih telah bersedia menjadi bagian paling terang di dalam semestaku yang sunyi. Di setiap bait lagu ini berputar, ada doa baik yang selalu terucap untukmu."
+                </p>
+                <button class="action-btn" style="background: #59163a; box-shadow: none;" onclick="concludeSymphony()">Selesai ✨</button>
+            </div>
+        </div>
+
+        <div id="final-heart-orchestra"></div>
+    </div>
+
+    <script>
+        // Data Narasi Panjang, Puitis & Mendalam (Improvisasi Konsep Video 1)
+        const timelineData = [
+            { title: "I. The Unspoken Harmony", text: "Terkadang, bagian terbaik dari sebuah cerita bukanlah bagaimana ia berawal, melainkan tentang siapa yang memilih untuk tetap bertahan saat alurnya mulai terasa asing. Dan bagiku, orang itu adalah kamu..." },
+            { title: "II. Resonance in Silence", text: "Aku selalu mengagumi bagaimana caramu membawa ketenangan tanpa perlu banyak bersuara. Lewat caramu memahami hal kecil, mendengarkan keluh kesahku, kamu telah membangun sebuah tempat pulang paling nyaman di dunia ini." },
+            { title: "III. A Beautiful Symphony", text: "Dunia luar mungkin sering berjalan terlalu cepat dan melelahkan, namun bersamamu, waktu rasanya melambat dengan sangat indah. Memberiku ruang untuk menyadari betapa beruntungnya aku bisa mengenal jiwamu." },
+            { title: "IV. Epilogue For You", text: "Halaman ini hanyalah sebuah usaha kecil untuk mengekspresikan rasa syukur yang tak terhingga. Terima kasih telah membagikan kehangatanmu denganku. Ketahuilah bahwa kamu sangat dihargai, melampaui lembaran digital ini..." }
+        ];
+
+        let sequenceIndex = 0;
+
+        function unveilSymphony() {
+            document.getElementById('vocal-track').play().catch(e => console.log("Audio ready"));
+            
+            const introScreen = document.getElementById('gift-screen');
+            introScreen.style.opacity = '0';
+            introScreen.style.transform = 'scale(1.1)';
+            
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+                const mainWrapper = document.getElementById('main-content');
+                mainWrapper.style.display = 'flex';
+                setTimeout(() => mainWrapper.style.opacity = '1', 50);
+
+                initCosmosEffect();
+                setInterval(spawnPetal, 200);
+                runCinematicCountdown();
+            }, 1200);
+        }
+
+        function runCinematicCountdown() {
+            const cdView = document.getElementById('countdown-box');
+            let timeVal = 3;
+            cdView.innerText = timeVal;
+
+            let timer = setInterval(() => {
+                timeVal--;
+                if (timeVal > 0) {
+                    cdView.innerText = timeVal;
+                } else if (timeVal === 0) {
+                    cdView.innerText = "🌸";
+                } else {
+                    clearInterval(timer);
+                    cdView.style.display = 'none';
+                    document.getElementById('story-panel').style.display = 'block';
+                    orchestrateTyping();
+                }
+            }, 950);
+        }
+
+        // Sistem Mesin Tik Otomatis Tanpa Interaksi Tombol Apapun
+        function orchestrateTyping() {
+            if (sequenceIndex < timelineData.length) {
+                document.getElementById('panel-title').innerText = timelineData[sequenceIndex].title;
+                const activeText = timelineData[sequenceIndex].text;
+                const textWords = activeText.split(" ");
+                let wIdx = 0;
+                const textOutlet = document.getElementById('panel-body');
+                textOutlet.innerHTML = "";
+
+                let typingCycle = setInterval(() => {
+                    if (wIdx < textWords.length) {
+                        textOutlet.innerHTML += textWords[wIdx] + " ";
+                        wIdx++;
+                    } else {
+                        clearInterval(typingCycle);
+                        sequenceIndex++;
+                        // Jeda membaca 3.2 detik sebelum beralih ke teks puitis berikutnya
+                        setTimeout(orchestrateTyping, 3200);
+                    }
+                }, 130); 
+            } else {
+                // Selesai seluruh teks, panel menghilang perlahan diganti Buku Lipat
+                document.getElementById('story-panel').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('story-panel').style.display = 'none';
+                    document.getElementById('magical-book').style.display = 'block';
+                }, 600);
+            }
+        }
+
+        function revealLetter() {
+            document.getElementById('b-front').classList.add('opened');
+            document.getElementById('b-back').style.zIndex = "5";
+        }
+
+        function concludeSymphony() {
+            document.getElementById('b-front').classList.remove('opened');
+            document.getElementById('b-back').style.zIndex = "1";
+            
+            setTimeout(() => {
+                document.getElementById('magical-book').style.display = 'none';
+                igniteHeartOrchestra();
+            }, 900);
+        }
+
+        // Formasi Algoritma Matematika Detak Jantung Partikel Neon Pink
+        function igniteHeartOrchestra() {
+            const centerStage = document.getElementById('final-heart-orchestra');
+            centerStage.style.display = 'block';
+
+            const heartCoordinates = [];
+            // Menggambar persamaan kurva matematika berbentuk jantung anatomis sempurna
+            for (let angle = 0; angle < Math.PI * 2; angle += 0.13) {
+                const r = 10;
+                const x = 16 * Math.pow(Math.sin(angle), 3);
+                const y = 13 * Math.cos(angle) - 5 * Math.cos(2*angle) - 2 * Math.cos(3*angle) - Math.cos(4*angle);
+                
+                // Konversi skala peta koordinat ke ukuran pixel layar HP
+                heartCoordinates.push({
+                    x: 160 + (x * 8.5),
+                    y: 140 - (y * 8.5)
+                });
+            }
+
+            heartCoordinates.forEach((coord, idx) => {
+                setTimeout(() => {
+                    const node = document.createElement('div');
+                    node.classList.add('heart-particle');
+                    node.style.left = coord.x + 'px';
+                    node.style.top = coord.y + 'px';
+                    
+                    // Efek gradasi warna pendaran pink-ungu neon
+                    const colorShades = ['#ff477e', '#ff758f', '#ff85a1', '#f72585'];
+                    node.style.backgroundColor = colorShades[Math.floor(Math.random() * colorShades.length)];
+                    node.style.boxShadow = `0 0 12px ${node.style.backgroundColor}`;
+
+                    centerStage.appendChild(node);
+                    
+                    setTimeout(() => {
+                        node.style.opacity = '0.9';
+                        node.style.transform = 'scale(1)';
+                    }, 40);
+                }, idx * 35); // Kecepatan partikel merayap melingkari bentuk pola jantung
+            });
+        }
+
+        function spawnPetal() {
+            const iconsList = ['🌸', '✨', '🌹', '💖'];
+            const leaf = document.createElement('div');
+            leaf.classList.add('falling-petal');
+            leaf.innerText = iconsList[Math.floor(Math.random() * iconsList.length)];
+            leaf.style.left = Math.random() * 100 + 'vw';
+            leaf.style.animationDuration = Math.random() * 3 + 3.5 + 's';
+            leaf.style.fontSize = Math.random() * 10 + 14 + 'px';
+            document.body.appendChild(leaf);
+            setTimeout(() => leaf.remove(), 6500);
+        }
+
+        // Efek Partikel Latar Belakang Mistis (Gaya Kosmik Lambat)
+        function initCosmosEffect() {
+            const canvas = document.getElementById('space-canvas');
+            const gl = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const stars = [];
+            for (let i = 0; i < 45; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 2 + 1,
+                    v: Math.random() * 0.4 + 0.1
+                });
+            }
+
+            function drawStars() {
+                gl.clearRect(0, 0, canvas.width, canvas.height);
+                gl.fillStyle = '#ff758f';
+                stars.forEach(s => {
+                    gl.beginPath();
+                    gl.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    gl.fill();
+                    s.y += s.v;
+                    if (s.y > canvas.height) s.y = 0;
+                });
+                requestAnimationFrame(drawStars);
+            }
+            drawStars();
+        }
+    </script>
+</body>
+</html>
